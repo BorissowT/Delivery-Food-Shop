@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block container %}
+
+
+      
+  <main class="container">
+    <h1 class="h3 my-4">Корзина</h1>
+    <div class="alert alert-warning" role="alert">Блюдо удалено из корзины</div>
+    <div class="row mt-5">
+      <div class="col-4">
+        <h4 class="">Ваши данные</h4>
+        <div class=" md-4 order-md-1">
+          <div class="mt-3 mb-3">
+            <label for="name">Ваше имя</label>
+            <input type="text" class="font-weight-bold form-control" id="name">
+          </div>
+        </div>
+        <div class=" md-4 order-md-1">
+          <div class="mt-3 mb-3">
+            <label for="name">Адрес</label>
+            <input type="text" class="font-weight-bold form-control" id="name">
+          </div>
+        </div>
+        <div class="md-4 form-label-group">
+          <label for="name">Электропочта</label>
+          <input type="email" id="inputEmail" class="form-control" required autofocus>
+          <label for="inputEmail"></label>
+        </div>
+        <div class=" md-4 order-md-1">
+          <div class="mt-3 mb-3">
+            <label for="name">Телефон</label>
+            <input type="text" class="font-weight-bold form-control" id="name">
+          </div>
+        </div>
+        <button type="submit" class=" mt-3 mb-5 btn btn-danger">Оформить заказ</button>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-7">
+        <h4 class="mb-3 col-7 mb-5">3 блюда в корзине</h4>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">Ролл "Хомский"</th>
+              <td></td>
+              <td>1</td>
+              <td>315</td>
+              <td><a class="text-danger" href="#">Удалить</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Бургер 404</th>
+              <td></td>
+              <td>1</td>
+              <td>250</td>
+              <td><a class="text-danger" href="#">Удалить</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Пица "Армин"</th>
+              <td></td>
+              <td>1</td>
+              <td>310</td>
+              <td><a class="text-danger" href="#">Удалить</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <p class="display-4 my-2 ">875 руб</p>
+      </div>
+    </div>
+  {% endblock %}
