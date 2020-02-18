@@ -4,15 +4,24 @@ import random
 from app import app
 from models import Meal,Category, db
 
+
 @app.route("/")
 def index():
     diction = {}
-
+    randomlist = []
+    counter = 0
+    min = 10
     categories = db.session.query(Category).all()
     for category in categories:
+        if len(db.session.query(Category).filter(Category.title == category.title).first().meal) < min:
+            min = len(db.session.query(Category).filter(Category.title == category.title).first().meal)
         diction[category.title] = db.session.query(Category).filter(Category.title == category.title).first().meal
-
-    return render_template("main.html", diction=diction, categories=categories)
+    while counter < 3:
+        rand = random.randrange(1, min)
+        if rand not in randomlist:
+            randomlist.append(rand)
+            counter += 1
+    return render_template("main.html", diction=diction, categories=categories, randomlist=randomlist)
 
 
 @app.route("/cart/")

@@ -13,12 +13,12 @@
     </section>
 
       {% for category in categories %}
-<section>
+      <section>
         
       <h3 class="my-4">{{category.title}}</h3>
         <div class="row mt-4">
-        {% for n in range(3) %}         
-        {% set meal = diction[category.title]|random %}
+        {% for n in randomlist %}         
+        {% set meal = diction[category.title][n] %}
     
         <div class="col-12 col-md-4">
           <div class="card mb-3">
