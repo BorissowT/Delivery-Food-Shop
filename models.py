@@ -1,11 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash
+
 from app import app
 
-app.secret_key = 'my-super-secret-phrase-I-do-not-tell-this-to-nobody'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 
 meals_orders_association = db.Table(
     "meals_orders",
@@ -22,9 +24,13 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128), nullable=False)
     address = db.Column(db.String(150), nullable=False)
     orders = db.relationship("Order", back_populates="user")
+    role = db.Column(db.String(32), default="user", nullable=False)
 
     def __repr__(self):
         return "id: {0} имя: {1}".format(self.id, self.name)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
 
 
 class Order (db.Model):
@@ -66,4 +72,4 @@ class Category (db.Model):
         return "{}".format(self.title)
 
 
-db.create_all()
+#db.create_all()

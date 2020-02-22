@@ -19,18 +19,21 @@
         <div class="row mt-4">
         {% for n in randomlist %}         
         {% set meal = diction[category.title][n] %}
-    
+
         <div class="col-12 col-md-4">
           <div class="card mb-3">
             <img src={{meal.picture}} width="300" height="250" class="card-img-top" alt="">
             <div class="card-body">
               <h4 class="h5 card-title">{{meal.title|truncate(25, True)}}</h4>
               <p class="card-text">{{meal.description|truncate(73)}}</p>
-              <button type="button" class="btn btn-danger">В корзину</button>
+              <form action="{{ url_for('cart')}}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button class="btn btn-danger" name="cart" value="{{  meal.id  }}">В корзину</button>
+                </form>
             </div>
           </div>
         </div>
-           
+
             
         {% endfor %}
         
