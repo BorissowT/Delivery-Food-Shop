@@ -3,6 +3,17 @@
 
      
   <main class="container">
+     <div class="row mt-5">
+          <div class="col-md-10 ">
+            <p class="h2 mb-3 ">User: {{name}}</p>
+          </div>
+       {% if role == "admin" %}
+          <div class="col-md-2">
+            <a href="/admin" class=" btn btn-danger">Войти в admin</a>
+          </div>
+       {% endif %}
+    </div>
+
     <section class="row">
       <div class="col-12 col-lg-8">
         <h1 class="h3 my-5">Личный кабинет. Заказы</h1>

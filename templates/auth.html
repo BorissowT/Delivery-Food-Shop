@@ -31,6 +31,15 @@
         {% endif %}
 
           <div class="mt-5 form-label-group">
+              {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                      <p class="alert alert-danger text-center mr-5">{{ message }}</p>
+                    {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
             <p class="text-muted">Электропочта</p>
             {{ form.mail(class = "form-control") }}
             <label for="inputEmail"></label>
