@@ -24,7 +24,7 @@ def total():
     cart_list = []
     total_cost = 0
     cart = session.get("cart", [])
-    ######getting ids from session and finding in db elemnts with ids###
+    ######getting ids from session and finding in db elemnts with ids for templates###
     for id in cart:
         newmeal = db.session.query(Meal).filter(Meal.id == id).first()
         cart_list.append(newmeal)
@@ -73,6 +73,7 @@ def cart():
         session["cart"] = cart
     elif request.method == "POST" and request.form.get('submit'):
         if form.validate_on_submit():
+            ###checking if user in database(already registered)####
             if db.session.query(User).filter(User.mail == form.mail.data).first() == None:
                 return ("Please register")########################################################## send User to registration
             else:
@@ -106,10 +107,12 @@ def cart():
 @app.route("/account/")
 @login_required
 def acc():
-
+    user_id = session.get("_user_id")
+    user = db.session.query(User).filter(User.id == user_id).first()
+    orders = user.orders
     return render_template("account.html", role=session.get("role"),
                            name=db.session.query(User).filter(User.id == session.get("_user_id")).first().name,
-                           amount=len(session.get("cart", [])), total_cost=total())
+                           amount=len(session.get("cart", [])), total_cost=total(), orders=orders)
 
 
 
