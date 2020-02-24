@@ -9,9 +9,13 @@ if __name__ == '__main__':
     app.run()
 
 #####todolist
+
 ####нулевой заказ
 ##priceform
-###registratiom
+###registration
 ###adminaccess
 ###account buttom
 ###order fields when userr logged in
+###try to split cart route in different functions
+###sending email to client
+###sending email to cleint from admin 
