@@ -3,10 +3,11 @@ import random
 from flask_wtf.csrf import CSRFProtect
 import datetime
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+import time
 
 from app import app
-from models import Meal, Category, User, Order, db
-from forms import ORDER, USER
+from models import Meal, Category, User, Order, db, generate_password_hash
+from forms import ORDER, USER, RegistrationForm
 
 
 app.secret_key = 'my-super-secret-phrase-I-do-not-tell-this-to-nobody'
@@ -69,13 +70,19 @@ def cart():
         cart = session.get("cart", [])
         if delete in session["cart"]:
             cart.pop(session["cart"].index(delete))
+            total_cost = session.get("total")
+            total_cost -= int(db.session.query(Meal).filter(Meal.id == delete).first().price)
+            session["total"] = total_cost
             flash("Блюдо удалено из корзины")
         session["cart"] = cart
+    #######sending order form###########################
     elif request.method == "POST" and request.form.get('submit'):
         if form.validate_on_submit():
-            ###checking if user in database(already registered)####
-            if db.session.query(User).filter(User.mail == form.mail.data).first() == None:
-                return ("Please register")########################################################## send User to registration
+            if form.validate_mail(form):
+                flash("Пользователь должен быть зарегистрирован")
+                return redirect("/registration")
+            elif not session.get("total"):
+                flash("Заказ не может быть пустым!")
             else:
                 user = db.session.query(User).filter(User.mail == form.mail.data).first()
                 now = datetime.datetime.now()
@@ -153,6 +160,31 @@ def logout():
        }, 3000);
 
  </script>"""
+
+
+@app.route('/registration', methods=["GET", "POST"])
+def registr():
+    if session.get("user"):
+        return redirect("/")
+    form = RegistrationForm()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            password = generate_password_hash(form.password1.data)
+            user = User(name=form.name.data, mail=form.mail.data, password_hash=password, address=form.address.data)
+            db.session.add(user)
+            db.session.commit()
+            return """<h2> SUCCESSFULLY REGISTERED. please wait...</h2>
+                <script>    
+                 window.setTimeout(function(){
+    
+                   // 3 sec redirect (JS)
+                   window.location.href = "/login";
+    
+                   }, 3000);
+    
+             </script>"""
+    return render_template("reg.html", form=form)
+
 
 
 @app.after_request

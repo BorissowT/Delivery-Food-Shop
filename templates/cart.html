@@ -5,6 +5,7 @@
       
   <main class="container">
     <h1 class="h3 my-4">Корзина</h1>
+      
     {% with messages = get_flashed_messages() %}
                   {% if messages %}
                     <ul class=flashes>
@@ -25,9 +26,13 @@
         <h4 class="">Ваши данные</h4>
         <div class=" md-4 order-md-1">
             <div class="mt-3 mb-3">
-                {% for err in form.name.errors %}
-                    <div class="alert alert-warning" role="alert">{{ err }}</div>
+                
+                {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+                    {% for error in field_errors %}
+                        <div class="alert alert-warning" role="alert"> {{ error }}</div>
+                    {% endfor %}
                 {% endfor %}
+                
             <label form="name">Ваше имя</label>
             {{ form.name(class = "form-control") }}
           </div>
@@ -64,6 +69,7 @@
               <td>1</td>
               <td>{{meal.price}}</td>
                 <form action="{{ url_for('cart')}}" method="POST">
+                    {{ form.csrf_token }}
                             <td><button class="btn btn-danger" name="delete" value="{{  meal.id  }}">Удалить</button></td>
                     </form>
             </tr>

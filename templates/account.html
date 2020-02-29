@@ -16,6 +16,7 @@
     <section class="row">
       <div class="col-12 col-lg-8">
         <h1 class="h3 my-5">Личный кабинет. Заказы</h1>
+          {% if orders|length > 0 %}
           {% for order in orders %}
         <div class="mt-4 card">
           <ul class="list-group list-group-flush">
@@ -40,6 +41,16 @@
           </ul>
         </div>
           {% endfor %}
+          {% else %}
+          <h1 class="h3 my-5">Пока заказов нет</h1>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          {% endif %}
       </div>
     </section>
   {% endblock %}
