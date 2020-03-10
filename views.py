@@ -107,8 +107,14 @@ def cart():
         newmeal = db.session.query(Meal).filter(Meal.id == id).first()
         cart_list.append(newmeal)
     total_cost = total()
+
+    if(db.session.query(User).filter(User.id == session.get("_user_id")).first() != None):
+        userautofields = db.session.query(User).filter(User.id == session.get("_user_id")).first()
+    else:
+        userautofields = []
     return render_template("cart.html", cart=cart_list, total_cost=total_cost, form=form, amount=len(cart),
-                           role=session.get("role"))
+                           role=session.get("role"),
+                           user=userautofields)
 
 
 @app.route("/account/")
@@ -125,6 +131,8 @@ def acc():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    if session.get("_user_id"):
+        return redirect("/")
     form = USER()
     if session.get("user"):
         return redirect("/")
@@ -164,7 +172,7 @@ def logout():
 
 @app.route('/registration', methods=["GET", "POST"])
 def registr():
-    if session.get("user"):
+    if session.get("_user_id"):
         return redirect("/")
     form = RegistrationForm()
     if request.method == "POST":

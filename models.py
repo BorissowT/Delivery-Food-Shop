@@ -29,9 +29,6 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return "id: {0} имя: {1}".format(self.id, self.name)
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
     def password_valid(self, password):
         # Проверяем пароль через этот метод
         # Функция check_password_hash превращает password в хеш и сравнивает с хранимым
@@ -49,6 +46,7 @@ class Order (db.Model):
     meals = db.relationship(
         "Meal", secondary=meals_orders_association, back_populates="orders"
     )
+
 
 
 class Meal (db.Model):
